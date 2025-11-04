@@ -7,6 +7,17 @@ const asyncHandler = (requestHandler)=>{
 export {asyncHandler}
 
 
+// FOR NON-ROUTING USAGE
+// export const safeAsync = (fn) => async (...args) => {
+//   try {
+//     await fn(...args);
+//   } catch (error) {
+//     console.error("❌ Unhandled Async Error:", error.message);
+//     process.exit(1); // Optional: exit on critical errors (like DB)
+//   }
+// };
+
+
 
 // const asyncHandler = () => {}
 // const asyncHandler = (func) => {() => {}}
