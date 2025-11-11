@@ -1,4 +1,5 @@
 const asyncHandler = (requestHandler)=>{
+<<<<<<< HEAD
     return (req, res, next) => {
         Promise.resolve(requestHandler(req, res, next)).catch((err) => next(err))
     }
@@ -8,6 +9,17 @@ export {asyncHandler}
 
 
 // FOR NON-ROUTING USAGE  -------------------------------> Best for Database Connectivity
+=======
+    (req, res, next) => {
+        Promise.resolve(requestHandler(req, res, next)).catch((err) => next(err))
+    }
+}
+
+export {asyncHandler}
+
+
+// FOR NON-ROUTING USAGE
+>>>>>>> 424ce8728696096cc2886d71114fa0256193267d
 // export const safeAsync = (fn) => async (...args) => {
 //   try {
 //     await fn(...args);
