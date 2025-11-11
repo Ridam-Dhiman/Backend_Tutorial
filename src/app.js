@@ -6,7 +6,6 @@ const app = express()
 
 // MIDDLEWARES CONFIG
 
-// Need To Research
 //***************************************************//
 app.use(cors({
     origin : process.env.CORS_ORIGIN,
@@ -18,8 +17,6 @@ app.use(express.urlencoded({extended : true,limit : true}))
 app.use(express.static("public"))
 //***************************************************//
 app.use(cookieParser())
-
-
 
 
 // Routes Import 
