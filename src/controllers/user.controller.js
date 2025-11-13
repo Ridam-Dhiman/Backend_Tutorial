@@ -5,6 +5,16 @@ import {User} from "../models/user.model.js"
 import {uploadOnCloudinary} from "../utils/cloudinary.js"
 
 const registerUser = asyncHandler( async(req, res) => {
+
+    //*********************       TESTING SECTION         **************************/
+
+    // res.status(200).json({
+    //     message : "Hello Rhythm"
+    // })
+
+    //*********************       TESTING SECTION         **************************/
+
+
     // get user details from frontend
     // validation - not empty 
     // check if user already exists : username, email
@@ -17,7 +27,7 @@ const registerUser = asyncHandler( async(req, res) => {
 
     // 1
     const {username, email, fullname, password} = req.body
-    console.log("email : ", email);
+    console.log(req.body);   
 
     // 2
     if (
@@ -27,41 +37,47 @@ const registerUser = asyncHandler( async(req, res) => {
     }
 
     // 3
-    const existedUser = User.findOne({
+    const existedUser = await User.findOne({
         $or : [{username}, {email}]
     })
     if(existedUser){
-        throw new ApiError(409, "User with email or username already exist")
+        throw new ApiError(409, "User with Email or Username already exist")
     }
 
     // 4
-    const avatarLocalPath = req.files?.avatar[0]?.path
-    const coverImageLocalPath = req.files?.coverImage[0]?.path
+    // req.files ===> study
+    const avatarLocalPath = req.files?.avatar[0]?.path;
+    // const coverImageLocalPath = req.files?.coverImage[0]?.path;
+
+    let coverImageLocalPath;
+    if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0){
+        coverImageLocalPath = req.files.coverImage[0].path;
+    }
 
     if(!avatarLocalPath){
         throw new ApiError(400, "Avatar File Required")
     }
 
     // 5
-    const avatar = await uploadOnCloudinary(avatarLocalPath)
-    const coverImage = await uploadOnCloudinary(coverImageLocalPath)
+    const Avatar = await uploadOnCloudinary(avatarLocalPath)
+    const CoverImage = await uploadOnCloudinary(coverImageLocalPath)
 
-    if(!avatar){
-        throw new ApiError(400, "Avatar File Required")
+    if(!Avatar){
+        throw new ApiError(400, "Avatar File Required !!!")
     }
 
     // 6
     const user = await User.create({
         fullname,
-        avatar : avatar.url,
-        coverImage : coverImage?.url || "",
+        avatar : Avatar.url,
+        coverImage : CoverImage?.url || "",
         email,
         password,
         username : username.toLowerCase()
     })
 
     // 7
-    const createdUser = User.findById(user._id).select(
+    const createdUser = await User.findById(user._id).select(
         "-password -refreshToken"
     )
 
@@ -74,6 +90,7 @@ const registerUser = asyncHandler( async(req, res) => {
     return res.status(201).json(
         new ApiResponse(200, createdUser, "User registered successfully")
     )
+    
 })
 
 export { registerUser }
