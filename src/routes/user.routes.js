@@ -30,8 +30,8 @@ router.route("/current-user").post(verifyJWT, getCurrentUser)
 router.route("/update-account").patch(verifyJWT, updateAccountDetails)
 
 // Dealing file(img)
-router.route("/Avatar").post(verifyJWT, upload.single("avatar"), updateUserAvatar)
-router.route("/Cover-Image").post(verifyJWT, upload.single("coverImage"), updateUserCoverImage)
+router.route("/avatar").post(verifyJWT, upload.single("avatar"), updateUserAvatar)
+router.route("/cover-image").post(verifyJWT, upload.single("coverImage"), updateUserCoverImage)
 
 // Dealing URL
 router.route("/c/:username").get(verifyJWT, getUserChannelProfile)
